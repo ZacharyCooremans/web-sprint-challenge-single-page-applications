@@ -20,9 +20,9 @@ const PizzaForm = (props) =>{
                 size: res.data.size,
                 pepperoni: false,
                 italian: false,
-                candian: false,
+                canadian: false,
                 pineapple: false,
-                specInstr: ""
+                special: ""
             });
           })
           .catch(err => console.log(err.response));
@@ -278,6 +278,7 @@ const PizzaForm = (props) =>{
 
             <div className='addTo'>
                     <button id="submit" disabled={disabled}>Make Pizza</button>
+                    <pre>{JSON.stringify(pizza, null, 2)}</pre>
                 </div>
             </div>
 

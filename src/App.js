@@ -3,14 +3,16 @@ import './App.css'
 import PizzaForm from './components/PizzaForm'
 import axios from 'axios'
 import * as yup from 'yup'
-import {Route, Switch, Link} from 'react-router-dom'
-
+import {Route, Switch} from 'react-router-dom'
 import HomePage from "./components/PizzaHome"
+import Pizza from './components/Pizza'
+
 import formSchema from './validation/FormSchema'
 
 const initialFormValues = {
   name:'',
   size:'',
+  sauce:'',
 
   pepperoni:false, sausage:false, canadian:false, italian:false, chicken:false,
   onions:false, green:false, tomatoes:false, olives:false, garlic:false,
@@ -19,23 +21,35 @@ const initialFormValues = {
   special: ''
 }
 const initialFormErrors = {
-  name: 'Name is required',
-  size: 'Size is required',
+  name: 'name is required',
+  size: 'size is required',
+  sauce: 'must pick a sauce',
 }
-
-const initialForm = [];
 
 
 const App = () => {
-
+  const [pizza, setPizza] = useState([])
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [disabled, setDisabled] = useState(true)
+
+  const getPizza = () => {
+    axios
+    .get('https://reqres.in/api/pizza')
+    .then((res) => {
+      setPizza(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
   const postPizza = pizza => {
     axios
     .post('https://reqres.in/api/pizza', pizza)
     .then((res) => {
+      setFormValues(initialFormValues)
+      setPizza(pizza)
       console.log(res.data)
     })
     .catch((err) => {
@@ -49,7 +63,8 @@ const App = () => {
     .reach(formSchema, name)
     .validate(value)
     .then(() => {
-      setFormErrors({... formErrors, [name]: ''})
+      setFormErrors({...formErrors, [name]: '',
+      });
     })
     .catch((err) => {
       setFormErrors({...formErrors, [name]: err.errors[0]})
@@ -61,24 +76,47 @@ const App = () => {
 
   const submit = () => {
     const pizza = {
+      name: formValues.name.trim(),
+      sauce: formValues.sauce.trim(),
       size: formValues.size.trim(),
       toppings:['pepperoni', 'sausage', 'canadian', 'italian',
                'chicken', 'onions', 'green', 'tomatoes', 'olives',
                'garlic', 'artichoke', 'cheese', 'pineapple', 'extra']
+               .filter(topping => formValues[topping]),
     }
     postPizza(pizza)
-  }
+  };
+
+  useEffect(() => {
+    getPizza()
+  }, [])
+
+  useEffect(() => {
+    formSchema
+    .isValid(formValues)
+    .then((valid) => setDisabled(!valid))
+  }, [formValues])
+
   return (
     <>
     <Switch>
-      <Route path="./components/PizzaForm/">
-        <PizzaForm values={formValues} onChange={change} onSubmit={submit} disabled={disabled} errors={formErrors}/>
+      <Route path="/Pizza">
+        <PizzaForm 
+        values={formValues} 
+        change={change} 
+        onSubmit={submit} 
+        disabled={disabled} 
+        errors={formErrors}
+        pizza={pizza}
+        />
       </Route>
-      <Route path='./components/'>
+      <Route path='/'>
         <HomePage />
       </Route>
     </Switch>
+
     </>
+    
   );
 };
 export default App;

@@ -1,21 +1,22 @@
 
-import * as yup from 'yup'
+import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
     name: yup
         .string()
-        .required('Name is required')
+        .trim()
+        .required('name is required')
         .min(2, 'Name must be at least 2 characters or longer'),
-    size: yup
-        .required('Size is required'),
 
     size: yup
         .string()
-        .oneOf(['small', 'medium', 'large', 'ex-large']),
+        .oneOf(['small', 'medium', 'large', 'ex-large'])
+        .required('size is required'),
     
     sauce: yup
         .string()
-        .oneOf(['original red', "garlic ranch", "bbq sauce", "spinach alfredo"]),
+        .required('must pick a sauce')
+        .oneOf(['originalRed', "garlicRanch", "bbqSauce", "spinachAlfredo"]),
 
     pepperoni: yup.boolean(),
     sausage: yup.boolean(),
@@ -27,10 +28,12 @@ const formSchema = yup.object().shape({
     tomatoes: yup.boolean(),
     olives: yup.boolean(),
     garlic: yup.boolean(),
-    artichokes: yup.boolean(),
+    artichoke: yup.boolean(),
     cheese: yup.boolean(),
     pineapple: yup.boolean(),
     extra: yup.boolean(),
+
+    gluten: yup.boolean(),
 
     special: yup.string(),
 })

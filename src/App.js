@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import {Route, Switch} from 'react-router-dom'
 import HomePage from "./components/PizzaHome"
 import Nav from './components/nav'
+import Pizza from './components/Pizza'
 
 
 import formSchema from './validation/FormSchema'
@@ -83,7 +84,7 @@ const App = () => {
       toppings:['pepperoni', 'sausage', 'canadian', 'italian',
                'chicken', 'onions', 'green', 'tomatoes', 'olives',
                'garlic', 'artichoke', 'cheese', 'pineapple', 'extra']
-               .filter(topping => formValues[topping]),
+               .filter((topping) => formValues[topping]),
     }
     postPizza(pizza)
   };
@@ -99,8 +100,15 @@ const App = () => {
   }, [formValues])
 
   return (
-
     <>
+    {/* <div>
+        {pizza.map(pizza => {
+          return (
+              <Pizza key={pizza.id} details={pizza} />
+            )
+          })
+        }
+        </div> */}
     <Switch>
       <Route path="/Pizza">
         <Nav />
@@ -111,9 +119,10 @@ const App = () => {
         disabled={disabled} 
         errors={formErrors}
         pizza={pizza}
-        postPizza={postPizza}
-
+        setPizza={setPizza}
+        setFormValues={setFormValues}
         />
+        
       </Route>
 
       <Route path='/'>

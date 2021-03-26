@@ -5,15 +5,28 @@ import Pizza from './Pizza'
 
 
 const PizzaForm = (props) =>{
-    const {values, submit, change, disabled, errors, postPizza} = props
+    const {values, submit, change, disabled, errors, setPizza, pizza, setFormValues} = props
 
-    const onSubmit = (evt) => {
-        evt.preventDefault();
-        submit();
-        return(
-            <h1>Nice</h1>
-        )
-    };
+    const onSubmit= e => {
+        e.preventDefault();
+        axios
+          .post("https://reqres.in/api/users", values)
+          .then(res => {
+            setPizza(res.data);
+            console.log("success", pizza);
+            console.log(res.data.size)
+            setFormValues({
+                name: "",
+                size: res.data.size,
+                pepperoni: false,
+                italian: false,
+                candian: false,
+                pineapple: false,
+                specInstr: ""
+            });
+          })
+          .catch(err => console.log(err.response));
+      };
     
     const onChange = (evt) => {
         const {name, value, type, checked} = evt.target;
@@ -265,12 +278,6 @@ const PizzaForm = (props) =>{
 
             <div className='addTo'>
                     <button id="submit" disabled={disabled}>Make Pizza</button>
-                    {/* {pizza.map(pizza => {
-                        return (
-                            <Pizza key={pizza.id} details={pizza} />
-                        )
-                        })
-                    } */}
                 </div>
             </div>
 

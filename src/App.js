@@ -5,7 +5,8 @@ import axios from 'axios'
 import * as yup from 'yup'
 import {Route, Switch} from 'react-router-dom'
 import HomePage from "./components/PizzaHome"
-import Pizza from './components/Pizza'
+import Nav from './components/nav'
+
 
 import formSchema from './validation/FormSchema'
 
@@ -35,7 +36,7 @@ const App = () => {
 
   const getPizza = () => {
     axios
-    .get('https://reqres.in/api/pizza')
+    .get('https://reqres.in/')
     .then((res) => {
       setPizza(res.data)
     })
@@ -46,16 +47,16 @@ const App = () => {
 
   const postPizza = pizza => {
     axios
-    .post('https://reqres.in/api/pizza', pizza)
+    .post('https://reqres.in/', pizza)
     .then((res) => {
       setFormValues(initialFormValues)
-      setPizza(pizza)
+      setPizza([res.data, ...pizza])
       console.log(res.data)
     })
     .catch((err) => {
       console.log(err)
     })
-    setFormValues(initialFormValues)
+    //setFormValues(initialFormValues)
   }
 
   const change = (name, value) => {
@@ -98,9 +99,11 @@ const App = () => {
   }, [formValues])
 
   return (
+
     <>
     <Switch>
       <Route path="/Pizza">
+        <Nav />
         <PizzaForm 
         values={formValues} 
         change={change} 
@@ -108,9 +111,13 @@ const App = () => {
         disabled={disabled} 
         errors={formErrors}
         pizza={pizza}
+        postPizza={postPizza}
+
         />
       </Route>
+
       <Route path='/'>
+        <Nav />
         <HomePage />
       </Route>
     </Switch>

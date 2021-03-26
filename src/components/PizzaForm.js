@@ -1,13 +1,18 @@
 import React from 'react'
 import {Link, useRouteMatch} from 'react-router-dom'
+import axios from 'axios'
+import Pizza from './Pizza'
 
 
 const PizzaForm = (props) =>{
-    const {values, submit, change, disabled, errors,} = props
+    const {values, submit, change, disabled, errors, postPizza} = props
 
     const onSubmit = (evt) => {
         evt.preventDefault();
         submit();
+        return(
+            <h1>Nice</h1>
+        )
     };
     
     const onChange = (evt) => {
@@ -16,10 +21,9 @@ const PizzaForm = (props) =>{
         change(name, valueToUse)
     }
 
-    const { url } = useRouteMatch()
-
     return(
         <form onSubmit = {onSubmit}>
+        
             <div className='form'>
             <div className='form-commit'>
                 <h1>MAKE A PIZZA</h1>
@@ -261,6 +265,12 @@ const PizzaForm = (props) =>{
 
             <div className='addTo'>
                     <button id="submit" disabled={disabled}>Make Pizza</button>
+                    {/* {pizza.map(pizza => {
+                        return (
+                            <Pizza key={pizza.id} details={pizza} />
+                        )
+                        })
+                    } */}
                 </div>
             </div>
 

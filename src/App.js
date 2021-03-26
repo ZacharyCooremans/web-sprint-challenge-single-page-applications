@@ -6,10 +6,9 @@ import * as yup from 'yup'
 import {Route, Switch} from 'react-router-dom'
 import HomePage from "./components/PizzaHome"
 import Nav from './components/nav'
-import Pizza from './components/Pizza'
-
-
 import formSchema from './validation/FormSchema'
+import Styled from 'styled-components';
+
 
 const initialFormValues = {
   name:'',
@@ -101,14 +100,6 @@ const App = () => {
 
   return (
     <>
-    {/* <div>
-        {pizza.map(pizza => {
-          return (
-              <Pizza key={pizza.id} details={pizza} />
-            )
-          })
-        }
-        </div> */}
     <Switch>
       <Route path="/Pizza">
         <Nav />

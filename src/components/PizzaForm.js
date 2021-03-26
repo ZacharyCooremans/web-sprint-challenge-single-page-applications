@@ -1,11 +1,24 @@
 import React from 'react'
-import {Link, useRouteMatch} from 'react-router-dom'
 import axios from 'axios'
-import Pizza from './Pizza'
+import Styled from 'styled-components'
+
+
+const FormStyle = Styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: black;
+    background: grey;
+  .errorName {
+    color: red;
+  }
+  `;
+
 
 
 const PizzaForm = (props) =>{
-    const {values, submit, change, disabled, errors, setPizza, pizza, setFormValues} = props
+    const {values, change, disabled, errors, setPizza, pizza, setFormValues} = props
 
     const onSubmit= e => {
         e.preventDefault();
@@ -37,10 +50,10 @@ const PizzaForm = (props) =>{
     return(
         <form onSubmit = {onSubmit}>
         
-            <div className='form'>
+            <FormStyle>
             <div className='form-commit'>
                 <h1>MAKE A PIZZA</h1>
-
+                <img src="https://media.istockphoto.com/photos/cheesy-pepperoni-pizza-picture-id938742222?k=6&m=938742222&s=612x612&w=0&h=on_9ZYG1SG4Xgk7BLZSlaXJl8VYb6ZePDHTN6zukDHM=" alt="logo"/>
                     <div className="errors">
                         <div>{errors.name}</div>
                         <div>{errors.size}</div>
@@ -280,7 +293,7 @@ const PizzaForm = (props) =>{
                     <button id="submit" disabled={disabled}>Make Pizza</button>
                     <pre>{JSON.stringify(pizza, null, 2)}</pre>
                 </div>
-            </div>
+            </FormStyle>
 
         </form>
         
